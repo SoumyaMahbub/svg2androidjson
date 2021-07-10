@@ -646,6 +646,14 @@ function parseSingleFile(inputXml) {
 
     var data = generateCode(inputXml);
 
+    var xmlDom = parseXml(data.code);
+
+    var jsonString = xml2json(xmlDom, "\t");
+
+    var jsonObject = JSON.parse(jsonString);
+
+    var jsonModified = modifyJson(jsonObject);
+
     if (data.warnings !== null) {
         setMessage(data.warnings, "alert-warning");
     }
@@ -654,7 +662,7 @@ function parseSingleFile(inputXml) {
         setMessage(data.error, "alert-danger");
         $("#output-box").hide();
     } else {
-        $("#output-code").text(data.code).animate({scrollTop: 0}, "fast");
+        $("#output-code").text(JSON.stringify(jsonModified, null, "\t")).animate({scrollTop: 0}, "fast");
         $("#output-box").fadeIn();
         $(".nouploadinfo").hide();
         $("#dropzone").animate({height: 50}, 500);
@@ -768,17 +776,17 @@ function setMessage(text, type) {
     info.show();
 }
 
-function useIdAsName(el) {
+function useIdAsName(el="true") {
     localStorage.useIdAsName = el.checked;
     if (groupData.groupSize == 1) parseSingleFile(lastFileData);
 }
 
-function bakeTransforms(el) {
+function bakeTransforms(el="true") {
     localStorage.bakeTransforms = el.checked;
     if (groupData.groupSize == 1) parseSingleFile(lastFileData);
 }
 
-function clearGroups(el) {
+function clearGroups(el="false") {
     localStorage.clearGroups = el.checked;
     if (groupData.groupSize == 1) parseSingleFile(lastFileData);
 }
