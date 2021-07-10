@@ -5,6 +5,9 @@ function modifyJson(json) {
     var modifiedJson = json;
 
     for (var element in json) {
+        if(element === "@xmlns:android") {
+            delete modifiedJson[element];
+        }
         if (element.includes('@android:')) {
             Object.defineProperty(modifiedJson, element.replace('@android:', ''),
                 Object.getOwnPropertyDescriptor(modifiedJson, element));
